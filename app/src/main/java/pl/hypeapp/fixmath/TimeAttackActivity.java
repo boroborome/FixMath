@@ -122,7 +122,7 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
 
         imagesUtils = (ImageUtil)getApplication();
 
-        setupIntersitialAds();
+        // setupIntersitialAds();
 
 
 

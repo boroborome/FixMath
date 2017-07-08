@@ -1,13 +1,9 @@
 package pl.hypeapp.fixmath;
 
-
-
-import java.util.ArrayList;
-
-
-
+import java.util.*;
 
 public class Level {
+    private static final Random numberGenerator = new Random();
 
     private int NumberLevel;
     private int UpLine;
@@ -19,7 +15,7 @@ public class Level {
     private ArrayList<Integer> LineStart= new ArrayList<>();
     private ArrayList<String[]> Figures = new ArrayList<>();
     public ArrayList<String> CorrectFigures = new ArrayList<>();
-    private ArrayList<String> ResultTexts = new ArrayList<>();
+    public ArrayList<String> ResultTexts = new ArrayList<>();
     public int HowManyLines;
 
 
@@ -39,6 +35,10 @@ public class Level {
         this.Figures = new ArrayList<>();
 
         this.NumberLevel = numberLevel;
+//        orgLevel(numberLevel);
+         childLevel(numberLevel);
+      }
+      private void orgLevel(int numberLevel) {
         switch (numberLevel){
             case 1:
                 Level1();
@@ -274,6 +274,62 @@ public class Level {
     }
 
 
+    private static String[] figures = new String[]{"k","o","r","s","rf","oz","ok","kf","kb","rg"};
+    private static List<String> getRandomFigures(int count){
+        Random r = new Random();
+        List<String> exist = new ArrayList<String>();
+        while (exist.size() < count) {
+            int index = r.nextInt(figures.length);
+            String f = figures[index];
+            if (!exist.contains(f)) {
+                exist.add(f);
+            }
+        }
+        return exist;
+    }
+
+    private int newNumber(int maxNumber) {
+        int half = maxNumber / 2;
+        while(half > 0) {
+            int value = numberGenerator.nextInt(maxNumber);
+            if (value > half) {
+                return value;
+            }
+            half = half / 2;
+        }
+        return numberGenerator.nextInt(maxNumber);
+    }
+
+    private void childLevel(int level) {
+      this.HowManyLines = 1;
+      this.UpLine = 3;
+      this.DownLine = 3;
+
+      // a + b = ?
+      int range = level / 20 + 5;
+      int a = newNumber(range);
+      int b = newNumber(range);
+
+      String result = String.valueOf(a+b);
+      //  2+3=5
+
+        List<String> levelFigures = getRandomFigures(2);
+        levelFigures.add("q");
+        this.Figures.add(levelFigures.toArray(new String[levelFigures.size()]));
+
+        this.Variables.add(new String[]{String.valueOf(a), String.valueOf(b), result});
+        this.Result.add(String.valueOf(a));
+        this.Symbols.add(new String[] {"+"});
+        this.ColumnStart.add(0);
+        this.LineStart.add(3);
+
+        this.ResultTexts.add("");
+        this.ResultTexts.add("");
+        this.ResultTexts.add(result);
+        this.CorrectFigures.add("q");
+        this.CorrectFigures.add("q");
+        this.CorrectFigures.add("q");
+    }
     private void Level1(){
         this.HowManyLines = 3;
         this.UpLine = 2;

@@ -32,6 +32,8 @@ import com.google.android.gms.ads.InterstitialAd;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class PlayActivity extends BaseGameActivity implements
@@ -118,7 +120,15 @@ public class PlayActivity extends BaseGameActivity implements
 
         logic = new Logic();
         for(int i = 0, x = level.GetUpLine(); i < level.HowManyLines; i++, x++) {
-            logic.setLogic(level.GetUpLine(), x, level.GetVariables(i));
+            String[] result = Arrays.copyOf(level.GetVariables(i), level.GetVariables(i).length);//new String[level.GetVariables(i).length];
+            String[] fixgure = level.GetFigures(i);
+            for (int index = 0; index < result.length; index++) {
+                if (fixgure[index] != "q") {
+                    result[index] = "";
+                }
+            }
+
+            logic.setLogic(level.GetUpLine(), x, result);
         }
         setCorrectFrameFigures();
 
@@ -128,7 +138,7 @@ public class PlayActivity extends BaseGameActivity implements
 
         setAcutalLevelTextView(levelActual1);
 
-        setupIntersitialAds(levelActual1);
+        // setupIntersitialAds(levelActual1);
 
     }
 
@@ -217,7 +227,7 @@ public class PlayActivity extends BaseGameActivity implements
     }
 
     boolean isNextLevel(int levelActual1){
-        if(levelActual1 + 1 <= 60){
+        if(levelActual1 + 1 <= 100){
             return true;
         }else{
             return false;
@@ -226,9 +236,9 @@ public class PlayActivity extends BaseGameActivity implements
 
     public void NextLevelBtnClick(View view){
         sfxManager.KeyboardClickPlay(true);
-        if(!showIntersitialAdOnNextLevel(intersitialAdOnNextLevel, levelActual1)) {
+//        if(!showIntersitialAdOnNextLevel(intersitialAdOnNextLevel, levelActual1)) {
             showNextLevelOrClose(levelActual1);
-        }
+//        }
     }
 
     void setAcutalLevelTextView(int acutalLevel){
@@ -277,41 +287,35 @@ public class PlayActivity extends BaseGameActivity implements
         }
     }
 
+    private static int[] correctFigureIds = new int[] {
+            R.id.a_correctFigure_1,
+            R.id.a_correctFigure_2,
+            R.id.a_correctFigure_3,
+            R.id.a_correctFigure_4,
+            R.id.a_correctFigure_5
+    };
     private void addCorrectFigure(){
+        int correctFigureId = correctFigureIds[passedLinesIndexer - 1];
 
-
-        TextView correctFigure;
-        switch(passedLinesIndexer) {
-            case 1:
-                correctFigure = (TextView) findViewById(R.id.a_correctFigure_1);
-                correctFigure.setText(level.GetResultTexts(passedLinesIndexer - 1));
-                setCorrectFigure(correctFigure);
-                break;
-            case 2:
-                correctFigure = (TextView) findViewById(R.id.a_correctFigure_2);
-                correctFigure.setText(level.GetResultTexts(passedLinesIndexer - 1));
-                setCorrectFigure(correctFigure);
-                break;
-            case 3:
-                correctFigure = (TextView) findViewById(R.id.a_correctFigure_3);
-                correctFigure.setText(level.GetResultTexts(passedLinesIndexer - 1));
-                setCorrectFigure(correctFigure);
-                break;
-            case 4:
-                correctFigure = (TextView) findViewById(R.id.a_correctFigure_4);
-                correctFigure.setText(level.GetResultTexts(passedLinesIndexer - 1));
-                setCorrectFigure(correctFigure);
-                break;
-            case 5:
-                correctFigure = (TextView) findViewById(R.id.a_correctFigure_5);
-                correctFigure.setText(level.GetResultTexts(passedLinesIndexer - 1));
-                setCorrectFigure(correctFigure);
-                break;
-        }
-
-
+        TextView correctFigure = (TextView) findViewById(correctFigureId);
+        correctFigure.setText(level.GetResultTexts(passedLinesIndexer - 1));
+        setCorrectFigure(correctFigure);
     }
 
+    private static class FigureInfo {
+        public final String code;
+        public final int id;
+        public final String name;
+        public final int backgroundId;
+
+        public FigureInfo(String code, int id, String name, int backgroundId) {
+            this.code = code;
+            this.id = id;
+            this.name = name;
+            this.backgroundId = backgroundId;
+        }
+
+    }
     public void setCorrectFigure(final TextView correctFigure){
 
         correctFigure.setVisibility(View.INVISIBLE);
@@ -930,8 +934,9 @@ public class PlayActivity extends BaseGameActivity implements
             variable++;
             textView = (TextView) findViewById(ID);
             TextViews.add(textView);
-            textView.setClickable(true);
+            textView.setClickable(figures[i] == "q");
             textView.setVisibility(View.VISIBLE);
+            textView.setText(calculations.VariableList.get(i));
             if (figures[i].equals("k")){
                 textView.setBackgroundResource(R.drawable.kwadrat);
                 textView.setTag("k");
@@ -1670,15 +1675,15 @@ public class PlayActivity extends BaseGameActivity implements
     public void intentAchievement(View view) {
         sfxManager.KeyboardClickPlay(true);
         SharedPreferences sharedPref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-        if(!sharedPref.getBoolean("SIGN_STATUS", true)) {
-            mSignInClicked = true;
-            googleApiClient.connect();
+//        if(!sharedPref.getBoolean("SIGN_STATUS", true)) {
+//            mSignInClicked = true;
+//            googleApiClient.connect();
             myProgress.updateProgress(googleApiClient, this);
-        }else{
-            mSignInClicked = true;
-            googleApiClient.connect();
-            startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), 2);
-        }
+//        }else{
+//            mSignInClicked = true;
+//            googleApiClient.connect();
+//            startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), 2);
+//        }
 
     }
 
@@ -1703,16 +1708,16 @@ public class PlayActivity extends BaseGameActivity implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        googleApiClient.connect();
+//        googleApiClient.connect();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         SharedPreferences sharedPref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-        if(sharedPref.getBoolean("SIGN_STATUS", true)){
-            googleApiClient.connect();
-        }
+//        if(sharedPref.getBoolean("SIGN_STATUS", true)){
+//            googleApiClient.connect();
+//        }
     }
 
     @Override
@@ -1757,7 +1762,7 @@ public class PlayActivity extends BaseGameActivity implements
             mSignInClicked = false;
             mResolvingConnectionFailure = false;
             if (resultCode == RESULT_OK) {
-                googleApiClient.connect();
+//                googleApiClient.connect();
             } else {
                 // Bring up an error dialog to alert the user that sign-in
                 // failed. The R.string.signin_failure should reference an error

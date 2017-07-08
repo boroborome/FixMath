@@ -61,7 +61,7 @@ public class LevelMenuActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("LVL", MODE_PRIVATE);
         String levelCompleteNumber = String.valueOf(sharedPreferences.getInt("LEVEL_COUNT", 0));
         TextView textView = (TextView) findViewById(R.id.level_count_text_view);
-        textView.setText(levelCompleteNumber + "/60");
+        textView.setText(levelCompleteNumber + "/100");
     }
 
     void manageDotToPage(int actualPage){
@@ -152,42 +152,7 @@ public class LevelMenuActivity extends AppCompatActivity {
         i.putExtra("LEVEL", tagInt);
         startActivity(i);
         finish();
-
-
-
     }
-
-    public void setLevelsViews(){
-        SharedPreferences sharedPreferences = getSharedPreferences("LVL", MODE_PRIVATE);
-        TextView levelView;
-        int levels = sharedPreferences.getInt("LEVEL_COUNT", 0);
-
-        if(levels == 0){
-            levelView = (TextView) findViewById(R.id.level1);
-            levelView.setBackgroundResource(R.drawable.level_button);
-            levelView.setClickable(true);
-        }else {
-            for (int i = 1; i <= levels + 3; i++) {
-                if (sharedPreferences.getBoolean("level" + i, false)) {
-                    String id = "level" + i;
-                    int resourceId = getResources().getIdentifier(id, "id", getPackageName());
-                    levelView = (TextView) findViewById(resourceId);
-                    levelView.setBackgroundResource(R.drawable.levelcorrect_button);
-                    levelView.setClickable(true);
-                } else {
-                    String id = "level" + i;
-                    int resourceId = getResources().getIdentifier(id, "id", getPackageName());
-                    levelView = (TextView) findViewById(resourceId);
-                    levelView.setBackgroundResource(R.drawable.level_button);
-                    levelView.setClickable(true);
-                }
-            }
-        }
-
-
-    }
-
-
 
     @Override
     public void onBackPressed() {

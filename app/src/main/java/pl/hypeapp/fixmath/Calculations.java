@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 
 public class Calculations {
-    public int[] Blank;
+    private int[] Blank;
     public ArrayList<String> SymbolList;
     public final ArrayList<String> VariableList;
     public String Result;

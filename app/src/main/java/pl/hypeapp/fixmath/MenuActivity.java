@@ -149,14 +149,14 @@ public class MenuActivity extends FragmentActivity implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        mGoogleApiClient.connect();
+//        mGoogleApiClient.connect();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         if (mExplicitSignOut) {
-            mGoogleApiClient.connect();
+//            mGoogleApiClient.connect();
             googlePlayBtn.setImageResource(R.drawable.play_button_loggin);
         } else {
             googlePlayBtn.setImageResource(R.drawable.play_button_to_loggin);
@@ -176,7 +176,7 @@ public class MenuActivity extends FragmentActivity implements
             mSignInClicked = false;
             mResolvingConnectionFailure = false;
             if (resultCode == RESULT_OK) {
-                mGoogleApiClient.connect();
+//                mGoogleApiClient.connect();
             } else {
                 // Bring up an error dialog to alert the user that sign-in
                 // failed. The R.string.signin_failure should reference an error
@@ -306,7 +306,7 @@ public class MenuActivity extends FragmentActivity implements
         if(!sharedPref.getBoolean("SIGN_STATUS", true)) {
             mSignInClicked = true;
             sfxManager.KeyboardClickPlay(true);
-            mGoogleApiClient.connect();
+//            mGoogleApiClient.connect();
         }else{
             Intent intent = new Intent();
             //Clear the activity so the back button returns to your app
@@ -337,7 +337,7 @@ public class MenuActivity extends FragmentActivity implements
         SharedPreferences sharedPref = getSharedPreferences("LOGGING", MODE_PRIVATE);
         if(!sharedPref.getBoolean("SIGN_STATUS", true)) {
             mSignInClicked = true;
-            mGoogleApiClient.connect();
+//            mGoogleApiClient.connect();
         }else{
             startActivityForResult(Games.Achievements.getAchievementsIntent(mGoogleApiClient), 1);
         }

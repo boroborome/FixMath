@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/level_button_closed"
+    android:layout_gravity="right"
+    android:textColor="@color/closed_text"
+    android:textSize="25sp"
+    android:textStyle="bold"
+    android:fontFamily="sans-serif-black"
+    android:gravity="center_vertical|center_horizontal"
+    android:paddingBottom="5dp"
+    android:layout_marginLeft="6dp"
+    android:tag="3"
+    android:onClick="playLevel"
+    android:enabled="false" />
