@@ -61,7 +61,7 @@ public class LevelMenuActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("LVL", MODE_PRIVATE);
         String levelCompleteNumber = String.valueOf(sharedPreferences.getInt("LEVEL_COUNT", 0));
         TextView textView = (TextView) findViewById(R.id.level_count_text_view);
-        textView.setText(levelCompleteNumber + "/100");
+        textView.setText(levelCompleteNumber + "/" + Contants.MaxLevel);
     }
 
     void manageDotToPage(int actualPage){

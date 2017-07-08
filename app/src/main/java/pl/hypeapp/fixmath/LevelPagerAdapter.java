@@ -14,24 +14,11 @@ public class LevelPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return new FragmentLevelPage(position * 16, 100);
-//        switch (position){
-//            case 0:
-//                return new FragmentLevelPage1();
-//            case 1:
-//                return new FragmentLevelPage2();
-//            case 2:
-//                return new FragmentLevelPage3();
-//            case 3:
-//                return new FragmentLevelPage4();
-//            default:
-//                break;
-//        }
-//        return null;
+        return new FragmentLevelPage(position * 16, Contants.MaxLevel);
     }
 
     @Override
     public int getCount() {
-        return 100 / 16 + (100 % 16 > 0 ? 1 : 0);
+        return Contants.MaxLevel / 16 + (Contants.MaxLevel % 16 > 0 ? 1 : 0);
     }
 }
