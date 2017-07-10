@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,24 +30,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pl.hypeapp.fixmath.model.Figures;
+
 
 public class PlayMathMissionActivity extends BaseGameActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static class AnswerInfo {
         public final TextView view;
         public int currentValue;
-        public final int correctValue;
-        public final MathMission.VariableExpression variableExpression;
+        public final MathMission.MathAnswer answer;
 
-        public AnswerInfo(MathMission.VariableExpression variableExpression, int correctValue, TextView view) {
-            this.variableExpression = variableExpression;
-            this.correctValue =correctValue;
+        public AnswerInfo(MathMission.MathAnswer answer, TextView view) {
+            this.answer = answer;
             this.view = view;
         }
     }
     private Map<String, AnswerInfo> answers = new HashMap<>();
 
     private Map<String, List<TextView>> variableViewDiction = new HashMap<>();
+
+    private MathMission mathMission;
 
     public int ClickOn, calcLineSwitch, Up, Down, LineID;
     public View BlankPointer = null;
@@ -77,16 +80,14 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
     int levelActual1;
     ImageUtil imageUtil;
 
-    InterstitialAd intersitialAdOnNextLevel, intersitialAdOnClosed ;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play);
+        setContentView(R.layout.activity_play_math);
 
-        ImageView background = (ImageView) findViewById(R.id.play_background_image);
+//        ImageView background = (ImageView) findViewById(R.id.play_background_image);
         imageUtil = (ImageUtil) getApplication();
-        imageUtil.setImageSecond(background, R.drawable.arcade_background);
+//        imageUtil.setImageSecond(background, R.drawable.arcade_background);
         YoYo.with(Techniques.FadeIn).duration(500).playOn(findViewById(R.id.PlayAct));
 
         getGameHelper().setConnectOnStart(false);
@@ -103,6 +104,9 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
         levelActual1 = bundle.getInt("LEVEL", 1);
 
         level = new Level(levelActual1);
+        mathMission = new MathMission(levelActual1);
+
+        initAnswers(mathMission);
 
         for(int i = 0; i < level.HowManyLines ; i++){
             Calculations calculations = new Calculations(
@@ -151,6 +155,16 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
 
     }
 
+    private void initAnswers(MathMission mathMission) {
+        LinearLayout answerView = (LinearLayout) this.findViewById(R.id.answerView);
+        for (MathMission.MathAnswer answer : mathMission.getMathAnswers()) {
+            TextView view = (TextView) getLayoutInflater().inflate(R.layout.play_answer_component, null);
+//            view.set
+            answers.put(answer.getVarName(), new AnswerInfo(answer, view));
+            answerView.addView(view);
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -158,36 +172,6 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
         imageUtil.unbindDrawables(findViewById(R.id.PlayAct));
         System.gc();
 
-    }
-
-    void setupIntersitialAds(final int levelActual){
-        if(levelActual % 2 == 0) {
-            AdRequest adRequest = new AdRequest.Builder()
-                    .build();
-
-            intersitialAdOnNextLevel = new InterstitialAd(this);
-            intersitialAdOnNextLevel.setAdUnitId(getString(R.string.adID));
-            intersitialAdOnNextLevel.setAdListener(new AdListener() {
-                @Override
-                public void onAdClosed() {
-
-                    showNextLevelOrClose(levelActual);
-                }
-            });
-            intersitialAdOnNextLevel.loadAd(adRequest);
-
-            intersitialAdOnClosed = new InterstitialAd(this);
-            intersitialAdOnClosed.setAdUnitId(getString(R.string.adID));
-            intersitialAdOnClosed.setAdListener(new AdListener() {
-                @Override
-                public void onAdClosed() {
-                    Intent i = new Intent(PlayMathMissionActivity.this, LevelMenuActivity.class);
-                    startActivity(i);
-                    finish();
-                }
-            });
-            intersitialAdOnClosed.loadAd(adRequest);
-        }
     }
 
     private void showNextLevelOrClose(int levelActual) {
@@ -204,34 +188,6 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
             Intent x = new Intent(PlayMathMissionActivity.this, LevelMenuActivity.class);
             startActivity(x);
             finish();
-        }
-    }
-
-    boolean showIntersitialAdOnNextLevel(InterstitialAd intersitialAdOnNextLevel, int actualLevel) {
-        if (actualLevel % 2 == 0) {
-            if (intersitialAdOnNextLevel.isLoaded()) {
-                intersitialAdOnNextLevel.show();
-                return true;
-            } else {
-                return false;
-            }
-        }else{
-            return false;
-        }
-
-
-    }
-
-    boolean showIntersitialAdOnClose(InterstitialAd intersitialAdOnClose, int actualLevel){
-        if(actualLevel % 2 == 0) {
-            if (intersitialAdOnClose.isLoaded()) {
-                intersitialAdOnClose.show();
-                return true;
-            } else {
-                return false;
-            }
-        }else{
-            return false;
         }
     }
 
@@ -271,29 +227,9 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
     }
 
     private void setCorrectFrameFigure(TextView correctFrameFigure, int index){
-        if (level.GetTimeAttackCorrectFigures(index).equals("k")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.kwadrat_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index ).equals("o")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.okrag_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index).equals("r")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.romb_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index).equals("s")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.skat_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index).equals("rf")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.romb_f_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index).equals("oz")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.okrag_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index).equals("ok")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.okat_ramka);
-        }else if (level.GetTimeAttackCorrectFigures(index).equals("q")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.question_ramka);
-        }else if (level.GetTimeAttackCorrectFigures(index).equals("kf")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.kwadrat_ramka);
-        }else if (level.GetTimeAttackCorrectFigures(index).equals("kb")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.kwadrat_ramka);
-        }else if (level.GetTimeAttackCorrectFigures(index).equals("rg")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.romb_ramka);
-        }
+        String code = level.GetTimeAttackCorrectFigures(index);
+        int backgroundResId = Figures.getFigure(code).backgroundId;
+        correctFrameFigure.setBackgroundResource(backgroundResId);
     }
 
     private static int[] correctFigureIds = new int[] {
@@ -311,57 +247,14 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
         setCorrectFigure(correctFigure);
     }
 
-    private static class FigureInfo {
-        public final String code;
-        public final int id;
-        public final String name;
-        public final int backgroundId;
-
-        public FigureInfo(String code, int id, String name, int backgroundId) {
-            this.code = code;
-            this.id = id;
-            this.name = name;
-            this.backgroundId = backgroundId;
-        }
-
-    }
     public void setCorrectFigure(final TextView correctFigure){
 
         correctFigure.setVisibility(View.INVISIBLE);
-        if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("k")) {
-            correctFigure.setBackgroundResource(R.drawable.kwadrat);
-            blockGoodAnswerFigures("k");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("o")) {
-            correctFigure.setBackgroundResource(R.drawable.okrag);
-            blockGoodAnswerFigures("o");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("r")) {
-            correctFigure.setBackgroundResource(R.drawable.romb);
-            blockGoodAnswerFigures("r");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("s")) {
-            correctFigure.setBackgroundResource(R.drawable.skat);
-            blockGoodAnswerFigures("s");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("rf")) {
-            correctFigure.setBackgroundResource(R.drawable.romb_f);
-            blockGoodAnswerFigures("rf");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("oz")) {
-            correctFigure.setBackgroundResource(R.drawable.okrag_z);
-            blockGoodAnswerFigures("oz");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("ok")) {
-            correctFigure.setBackgroundResource(R.drawable.okat);
-            blockGoodAnswerFigures("ok");
-        }else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("q")) {
-            correctFigure.setBackgroundResource(R.drawable.question);
-            blockGoodAnswerFigures("q");
-        }else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("kf")) {
-            correctFigure.setBackgroundResource(R.drawable.kwadrat_f);
-            blockGoodAnswerFigures("kf");
-        }else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("kb")) {
-            correctFigure.setBackgroundResource(R.drawable.kwadrat_blue);
-            blockGoodAnswerFigures("kb");
-        }else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("rg")) {
-            correctFigure.setBackgroundResource(R.drawable.romb_green);
-            blockGoodAnswerFigures("rg");
-        }
+        String code = level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1);
+        int backgroundResource = Figures.getFigure(code).backgroundId;
+
+        correctFigure.setBackgroundResource(backgroundResource);
+        blockGoodAnswerFigures(code);
 
         YoYo.with(Techniques.ZoomIn)
                 .duration(500)
@@ -805,11 +698,9 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
         if(isKeyboradOpen) {
             KeyboardCloseAnimate();
         }else{
-            if(!showIntersitialAdOnClose(intersitialAdOnClosed, levelActual1)) {
-                Intent i = new Intent(PlayMathMissionActivity.this, LevelMenuActivity.class);
-                startActivity(i);
-                finish();
-            }
+            Intent i = new Intent(PlayMathMissionActivity.this, LevelMenuActivity.class);
+            startActivity(i);
+            finish();
         }
     }
 
@@ -1665,20 +1556,16 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
 
     public void backToLevelMenu(View view) {
         sfxManager.KeyboardClickPlay(true);
-        if(!showIntersitialAdOnClose(intersitialAdOnClosed, levelActual1)) {
-            Intent i = new Intent(PlayMathMissionActivity.this, LevelMenuActivity.class);
-            startActivity(i);
-            finish();
-        }
+        Intent i = new Intent(PlayMathMissionActivity.this, LevelMenuActivity.class);
+        startActivity(i);
+        finish();
     }
 
     public void ChooseLevelToBack(View view) {
         sfxManager.KeyboardClickPlay(true);
-        if(!showIntersitialAdOnClose(intersitialAdOnClosed, levelActual1)) {
-            Intent i = new Intent(PlayMathMissionActivity.this, LevelMenuActivity.class);
-            startActivity(i);
-            finish();
-        }
+        Intent i = new Intent(PlayMathMissionActivity.this, LevelMenuActivity.class);
+        startActivity(i);
+        finish();
     }
 
     public void intentAchievement(View view) {

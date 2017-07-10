@@ -8,11 +8,12 @@ import java.util.List;
  */
 
 public class MathMission {
+    private int level;
     private List<MathQuestion> mathQuestions = new ArrayList<>();
     private List<MathAnswer> mathAnswers = new ArrayList<>();
 
-    public MathMission() {
-
+    public MathMission(int level) {
+        this.level = level;
     }
 
     public List<MathQuestion> getMathQuestions() {
@@ -47,5 +48,13 @@ public class MathMission {
     public static class MathAnswer {
         private String varName;
         private int value;
+
+        public String getVarName() {
+            return varName;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 }

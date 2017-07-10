@@ -10,80 +10,21 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/play_background_image"
+        android:background="@drawable/arcade_background"
         android:scaleType="fitXY"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="47dp"
-        android:id="@+id/correct_figures_a"
         android:background="@drawable/transparent_for_corrects"
         android:paddingTop="8dp">
 
         <LinearLayout
+            android:id="@+id/answerView"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal">
-
-            <TextView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:id="@+id/a_correctFigure_1"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_toLeftOf="@+id/a_correctFigure_2"
-                android:visibility="gone"
-                android:gravity="center_vertical|center_horizontal" />
-
-            <TextView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:id="@+id/a_correctFigure_2"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_toLeftOf="@+id/a_correctFigure_3"
-                android:layout_marginLeft="10dp"
-                android:visibility="gone"
-                android:gravity="center_vertical|center_horizontal" />
-
-            <TextView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:id="@+id/a_correctFigure_3"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="10dp"
-                android:visibility="gone"
-                android:gravity="center_vertical|center_horizontal" />
-
-            <TextView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:id="@+id/a_correctFigure_4"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_toRightOf="@+id/a_correctFigure_3"
-                android:layout_marginLeft="10dp"
-                android:visibility="gone"
-                android:gravity="center_vertical|center_horizontal" />
-
-            <TextView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:id="@+id/a_correctFigure_5"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_toRightOf="@+id/a_correctFigure_4"
-                android:layout_marginLeft="10dp"
-                android:visibility="gone"
-                android:gravity="center_vertical|center_horizontal" />
         </LinearLayout>
 
     </RelativeLayout>

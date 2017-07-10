@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import pl.hypeapp.fixmath.model.Figures;
+
 
 public class PlayActivity extends BaseGameActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -122,10 +124,10 @@ public class PlayActivity extends BaseGameActivity implements
         for(int i = 0, x = level.GetUpLine(); i < level.HowManyLines; i++, x++) {
             String[] result = Arrays.copyOf(level.GetVariables(i), level.GetVariables(i).length);//new String[level.GetVariables(i).length];
             String[] fixgure = level.GetFigures(i);
-            for (int index = 0; index < result.length; index++) {
-                if (fixgure[index] != "q") {
+            for (int index = 0; index < result.length - 1; index++) {
+//                if (fixgure[index] != "q") {
                     result[index] = "";
-                }
+//                }
             }
 
             logic.setLogic(level.GetUpLine(), x, result);
@@ -151,36 +153,6 @@ public class PlayActivity extends BaseGameActivity implements
 
     }
 
-    void setupIntersitialAds(final int levelActual){
-        if(levelActual % 2 == 0) {
-            AdRequest adRequest = new AdRequest.Builder()
-                    .build();
-
-            intersitialAdOnNextLevel = new InterstitialAd(this);
-            intersitialAdOnNextLevel.setAdUnitId(getString(R.string.adID));
-            intersitialAdOnNextLevel.setAdListener(new AdListener() {
-                @Override
-                public void onAdClosed() {
-
-                    showNextLevelOrClose(levelActual);
-                }
-            });
-            intersitialAdOnNextLevel.loadAd(adRequest);
-
-            intersitialAdOnClosed = new InterstitialAd(this);
-            intersitialAdOnClosed.setAdUnitId(getString(R.string.adID));
-            intersitialAdOnClosed.setAdListener(new AdListener() {
-                @Override
-                public void onAdClosed() {
-                    Intent i = new Intent(PlayActivity.this, LevelMenuActivity.class);
-                    startActivity(i);
-                    finish();
-                }
-            });
-            intersitialAdOnClosed.loadAd(adRequest);
-        }
-    }
-
     private void showNextLevelOrClose(int levelActual) {
 
         if(isNextLevel(levelActual)){
@@ -198,32 +170,18 @@ public class PlayActivity extends BaseGameActivity implements
         }
     }
 
-    boolean showIntersitialAdOnNextLevel(InterstitialAd intersitialAdOnNextLevel, int actualLevel) {
-        if (actualLevel % 2 == 0) {
-            if (intersitialAdOnNextLevel.isLoaded()) {
-                intersitialAdOnNextLevel.show();
-                return true;
-            } else {
-                return false;
-            }
-        }else{
-            return false;
-        }
-
-
-    }
-
     boolean showIntersitialAdOnClose(InterstitialAd intersitialAdOnClose, int actualLevel){
-        if(actualLevel % 2 == 0) {
-            if (intersitialAdOnClose.isLoaded()) {
-                intersitialAdOnClose.show();
-                return true;
-            } else {
-                return false;
-            }
-        }else{
-            return false;
-        }
+        return true;
+//        if(actualLevel % 2 == 0) {
+//            if (intersitialAdOnClose.isLoaded()) {
+//                intersitialAdOnClose.show();
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        }else{
+//            return false;
+//        }
     }
 
     boolean isNextLevel(int levelActual1){
@@ -262,29 +220,9 @@ public class PlayActivity extends BaseGameActivity implements
     }
 
     private void setCorrectFrameFigure(TextView correctFrameFigure, int index){
-        if (level.GetTimeAttackCorrectFigures(index).equals("k")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.kwadrat_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index ).equals("o")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.okrag_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index).equals("r")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.romb_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index).equals("s")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.skat_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index).equals("rf")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.romb_f_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index).equals("oz")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.okrag_ramka);
-        } else if (level.GetTimeAttackCorrectFigures(index).equals("ok")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.okat_ramka);
-        }else if (level.GetTimeAttackCorrectFigures(index).equals("q")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.question_ramka);
-        }else if (level.GetTimeAttackCorrectFigures(index).equals("kf")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.kwadrat_ramka);
-        }else if (level.GetTimeAttackCorrectFigures(index).equals("kb")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.kwadrat_ramka);
-        }else if (level.GetTimeAttackCorrectFigures(index).equals("rg")) {
-            correctFrameFigure.setBackgroundResource(R.drawable.romb_ramka);
-        }
+        String code = level.GetTimeAttackCorrectFigures(index);
+        int frameResID = Figures.getFigure(code).frameFigure;
+        correctFrameFigure.setBackgroundResource(frameResID);
     }
 
     private static int[] correctFigureIds = new int[] {
@@ -302,57 +240,14 @@ public class PlayActivity extends BaseGameActivity implements
         setCorrectFigure(correctFigure);
     }
 
-    private static class FigureInfo {
-        public final String code;
-        public final int id;
-        public final String name;
-        public final int backgroundId;
-
-        public FigureInfo(String code, int id, String name, int backgroundId) {
-            this.code = code;
-            this.id = id;
-            this.name = name;
-            this.backgroundId = backgroundId;
-        }
-
-    }
     public void setCorrectFigure(final TextView correctFigure){
 
         correctFigure.setVisibility(View.INVISIBLE);
-        if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("k")) {
-            correctFigure.setBackgroundResource(R.drawable.kwadrat);
-            blockGoodAnswerFigures("k");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("o")) {
-            correctFigure.setBackgroundResource(R.drawable.okrag);
-            blockGoodAnswerFigures("o");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("r")) {
-            correctFigure.setBackgroundResource(R.drawable.romb);
-            blockGoodAnswerFigures("r");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("s")) {
-            correctFigure.setBackgroundResource(R.drawable.skat);
-            blockGoodAnswerFigures("s");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("rf")) {
-            correctFigure.setBackgroundResource(R.drawable.romb_f);
-            blockGoodAnswerFigures("rf");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("oz")) {
-            correctFigure.setBackgroundResource(R.drawable.okrag_z);
-            blockGoodAnswerFigures("oz");
-        } else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("ok")) {
-            correctFigure.setBackgroundResource(R.drawable.okat);
-            blockGoodAnswerFigures("ok");
-        }else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("q")) {
-            correctFigure.setBackgroundResource(R.drawable.question);
-            blockGoodAnswerFigures("q");
-        }else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("kf")) {
-            correctFigure.setBackgroundResource(R.drawable.kwadrat_f);
-            blockGoodAnswerFigures("kf");
-        }else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("kb")) {
-            correctFigure.setBackgroundResource(R.drawable.kwadrat_blue);
-            blockGoodAnswerFigures("kb");
-        }else if (level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1).equals("rg")) {
-            correctFigure.setBackgroundResource(R.drawable.romb_green);
-            blockGoodAnswerFigures("rg");
-        }
+        String code = level.GetTimeAttackCorrectFigures(passedLinesIndexer - 1);
+        int backgroundResource = Figures.getFigure(code).backgroundId;
+
+        correctFigure.setBackgroundResource(backgroundResource);
+        blockGoodAnswerFigures(code);
 
         YoYo.with(Techniques.ZoomIn)
                 .duration(500)
@@ -934,44 +829,54 @@ public class PlayActivity extends BaseGameActivity implements
             variable++;
             textView = (TextView) findViewById(ID);
             TextViews.add(textView);
-            textView.setClickable(figures[i] == "q");
             textView.setVisibility(View.VISIBLE);
-            textView.setText(calculations.VariableList.get(i));
-            if (figures[i].equals("k")){
-                textView.setBackgroundResource(R.drawable.kwadrat);
-                textView.setTag("k");
-            }else if(figures[i].equals("o")){
-                textView.setBackgroundResource(R.drawable.okrag);
-                textView.setTag("o");
-            }else if(figures[i].equals("r")){
-                textView.setBackgroundResource(R.drawable.romb);
-                textView.setTag("r");
-            }else if(figures[i].equals("s")){
-                textView.setBackgroundResource(R.drawable.skat);
-                textView.setTag("s");
-            }else  if(figures[i].equals("rf")){
-                textView.setBackgroundResource(R.drawable.romb_f);
-                textView.setTag("rf");
-            }else  if(figures[i].equals("oz")){
-                textView.setBackgroundResource(R.drawable.okrag_z);
-                textView.setTag("oz");
-            }else  if(figures[i].equals("ok")){
-                textView.setBackgroundResource(R.drawable.okat);
-                textView.setTag("ok");
-            }else if(figures[i].equals("q")){
-                textView.setBackgroundResource(R.drawable.question);
+
+            if (i == 2) {
+                textView.setClickable(true);//figures[i] == "q");
                 textView.setText("?");
-                textView.setTag("q");
-            }else  if(figures[i].equals("kf")){
-                textView.setBackgroundResource(R.drawable.kwadrat_f);
-                textView.setTag("kf");
-            }else  if(figures[i].equals("kb")){
-                textView.setBackgroundResource(R.drawable.kwadrat_blue);
-                textView.setTag("kb");
-            }else  if(figures[i].equals("rg")){
-                textView.setBackgroundResource(R.drawable.romb_green);
-                textView.setTag("rg");
+            } else {
+                textView.setText(calculations.VariableList.get(i));
             }
+
+            int backgroundResId = Figures.getFigure(figures[i]).backgroundId;
+            textView.setBackgroundResource(backgroundResId);
+            textView.setTag(figures[i]);
+//
+//            if (figures[i].equals("k")){
+//                textView.setBackgroundResource(R.drawable.kwadrat);
+//                textView.setTag("k");
+//            }else if(figures[i].equals("o")){
+//                textView.setBackgroundResource(R.drawable.okrag);
+//                textView.setTag("o");
+//            }else if(figures[i].equals("r")){
+//                textView.setBackgroundResource(R.drawable.romb);
+//                textView.setTag("r");
+//            }else if(figures[i].equals("s")){
+//                textView.setBackgroundResource(R.drawable.skat);
+//                textView.setTag("s");
+//            }else  if(figures[i].equals("rf")){
+//                textView.setBackgroundResource(R.drawable.romb_f);
+//                textView.setTag("rf");
+//            }else  if(figures[i].equals("oz")){
+//                textView.setBackgroundResource(R.drawable.okrag_z);
+//                textView.setTag("oz");
+//            }else  if(figures[i].equals("ok")){
+//                textView.setBackgroundResource(R.drawable.okat);
+//                textView.setTag("ok");
+//            }else if(figures[i].equals("q")){
+//                textView.setBackgroundResource(R.drawable.question);
+//                textView.setText("?");
+//                textView.setTag("q");
+//            }else  if(figures[i].equals("kf")){
+//                textView.setBackgroundResource(R.drawable.kwadrat_f);
+//                textView.setTag("kf");
+//            }else  if(figures[i].equals("kb")){
+//                textView.setBackgroundResource(R.drawable.kwadrat_blue);
+//                textView.setTag("kb");
+//            }else  if(figures[i].equals("rg")){
+//                textView.setBackgroundResource(R.drawable.romb_green);
+//                textView.setTag("rg");
+//            }
 
         }
 

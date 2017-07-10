@@ -275,14 +275,15 @@ public class Level {
 
 
     private static String[] figures = new String[]{"k","o","r","s","rf","oz","ok","kf","kb","rg"};
-    private static List<String> getRandomFigures(int count){
+    private static List<String> getRandomFigures(int count, Set<String> existFigures){
         Random r = new Random();
         List<String> exist = new ArrayList<String>();
         while (exist.size() < count) {
             int index = r.nextInt(figures.length);
             String f = figures[index];
-            if (!exist.contains(f)) {
+            if (!existFigures.contains(f)) {
                 exist.add(f);
+                existFigures.add(f);
             }
         }
         return exist;
@@ -301,31 +302,32 @@ public class Level {
     }
 
     private void childLevel(int level) {
-      this.HowManyLines = 1;
-      this.UpLine = 3;
-      this.DownLine = 3;
+      this.UpLine = 2;
+      this.DownLine = 4;
+        this.HowManyLines = DownLine - UpLine + 1;
+       Set<String> existFigures = new HashSet<>();
 
-      // a + b = ?
-      int range = level / 20 + 5;
-      int a = newNumber(range);
-      int b = newNumber(range);
+      for (int line = 2; line <= 4; line++) {
+          // a + b = ?
+          int range = level / 20 + 5;
+          int a = newNumber(range);
+          int b = newNumber(range);
 
-      String result = String.valueOf(a+b);
-      //  2+3=5
+          String result = String.valueOf(a+b);
+          //  2+3=5
 
-        List<String> levelFigures = getRandomFigures(2);
-        levelFigures.add("q");
-        this.Figures.add(levelFigures.toArray(new String[levelFigures.size()]));
+          List<String> levelFigures = getRandomFigures(3, existFigures);
+//          levelFigures.add("q");
+          this.Figures.add(levelFigures.toArray(new String[levelFigures.size()]));
 
-        this.Variables.add(new String[]{String.valueOf(a), String.valueOf(b), result});
-        this.Result.add(String.valueOf(a));
-        this.Symbols.add(new String[] {"+"});
-        this.ColumnStart.add(0);
-        this.LineStart.add(3);
+          this.Variables.add(new String[]{String.valueOf(a), String.valueOf(b), result});
+          this.Result.add(String.valueOf(a));
+          this.Symbols.add(new String[] {"+"});
+          this.ColumnStart.add(0);
+          this.LineStart.add(line);
+          this.ResultTexts.add(result);
+      }
 
-        this.ResultTexts.add("");
-        this.ResultTexts.add("");
-        this.ResultTexts.add(result);
         this.CorrectFigures.add("q");
         this.CorrectFigures.add("q");
         this.CorrectFigures.add("q");
