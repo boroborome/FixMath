@@ -1,6 +1,12 @@
 package pl.hypeapp.fixmath;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import static pl.hypeapp.fixmath.model.Figures.allFigures;
 
 public class Level {
     private static final Random numberGenerator = new Random();
@@ -274,13 +280,12 @@ public class Level {
     }
 
 
-    private static String[] figures = new String[]{"k","o","r","s","rf","oz","ok","kf","kb","rg"};
     private static List<String> getRandomFigures(int count, Set<String> existFigures){
         Random r = new Random();
         List<String> exist = new ArrayList<String>();
         while (exist.size() < count) {
-            int index = r.nextInt(figures.length);
-            String f = figures[index];
+            int index = r.nextInt(allFigures.length);
+            String f = allFigures[index].code;
             if (!existFigures.contains(f)) {
                 exist.add(f);
                 existFigures.add(f);
