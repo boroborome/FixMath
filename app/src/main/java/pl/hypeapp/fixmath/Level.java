@@ -331,11 +331,8 @@ public class Level {
           this.ColumnStart.add(0);
           this.LineStart.add(line);
           this.ResultTexts.add(result);
+          this.CorrectFigures.add(levelFigures.get(2));
       }
-
-        this.CorrectFigures.add("q");
-        this.CorrectFigures.add("q");
-        this.CorrectFigures.add("q");
     }
     private void Level1(){
         this.HowManyLines = 3;
