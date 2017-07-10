@@ -203,6 +203,7 @@ public class PlayActivity extends BaseGameActivity implements
             int correctFigureID = getResources().getIdentifier(TextViewID, "id", getPackageName());
             correctFigure = (TextView) findViewById(correctFigureID);
             correctFigure.setVisibility(View.VISIBLE);
+            correctFigure.setText("?");
             setCorrectFrameFigure(correctFigure, i);
         }
 
@@ -830,43 +831,6 @@ public class PlayActivity extends BaseGameActivity implements
             int backgroundResId = Figures.getFigure(figures[i]).backgroundId;
             textView.setBackgroundResource(backgroundResId);
             textView.setTag(figures[i]);
-//
-//            if (figures[i].equals("k")){
-//                textView.setBackgroundResource(R.drawable.kwadrat);
-//                textView.setTag("k");
-//            }else if(figures[i].equals("o")){
-//                textView.setBackgroundResource(R.drawable.okrag);
-//                textView.setTag("o");
-//            }else if(figures[i].equals("r")){
-//                textView.setBackgroundResource(R.drawable.romb);
-//                textView.setTag("r");
-//            }else if(figures[i].equals("s")){
-//                textView.setBackgroundResource(R.drawable.skat);
-//                textView.setTag("s");
-//            }else  if(figures[i].equals("rf")){
-//                textView.setBackgroundResource(R.drawable.romb_f);
-//                textView.setTag("rf");
-//            }else  if(figures[i].equals("oz")){
-//                textView.setBackgroundResource(R.drawable.okrag_z);
-//                textView.setTag("oz");
-//            }else  if(figures[i].equals("ok")){
-//                textView.setBackgroundResource(R.drawable.okat);
-//                textView.setTag("ok");
-//            }else if(figures[i].equals("q")){
-//                textView.setBackgroundResource(R.drawable.question);
-//                textView.setText("?");
-//                textView.setTag("q");
-//            }else  if(figures[i].equals("kf")){
-//                textView.setBackgroundResource(R.drawable.kwadrat_f);
-//                textView.setTag("kf");
-//            }else  if(figures[i].equals("kb")){
-//                textView.setBackgroundResource(R.drawable.kwadrat_blue);
-//                textView.setTag("kb");
-//            }else  if(figures[i].equals("rg")){
-//                textView.setBackgroundResource(R.drawable.romb_green);
-//                textView.setTag("rg");
-//            }
-
         }
 
 
