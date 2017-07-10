@@ -2,6 +2,7 @@ package pl.hypeapp.fixmath.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import pl.hypeapp.fixmath.R;
 
@@ -10,6 +11,9 @@ import pl.hypeapp.fixmath.R;
  */
 
 public final class Figures {
+
+    private static final Random numberGenerator = new Random();
+
     public static class FigureInfo {
         public final String code;
         public final int id;
@@ -56,5 +60,15 @@ public final class Figures {
         }
         diction = d;
         return d;
+    }
+
+    public static String getRandomFigure(Map<String, String> existFigure){
+        while (true) {
+            int index = numberGenerator.nextInt(Figures.allFigures.length);
+            String f = Figures.allFigures[index].code;
+            if (!existFigure.containsKey(f)) {
+                return f;
+            }
+        }
     }
 }

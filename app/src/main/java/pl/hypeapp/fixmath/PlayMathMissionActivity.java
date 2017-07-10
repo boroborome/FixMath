@@ -14,9 +14,6 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.example.games.basegameutils.BaseGameActivity;
@@ -30,7 +27,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pl.hypeapp.fixmath.factory.ChildMathFactory;
 import pl.hypeapp.fixmath.model.Figures;
+import pl.hypeapp.fixmath.model.MathMission;
 
 
 public class PlayMathMissionActivity extends BaseGameActivity implements
@@ -90,66 +89,68 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
 //        imageUtil.setImageSecond(background, R.drawable.arcade_background);
         YoYo.with(Techniques.FadeIn).duration(500).playOn(findViewById(R.id.PlayAct));
 
-        getGameHelper().setConnectOnStart(false);
-        googleApiClient = getApiClient();
-        googleApiClient.registerConnectionCallbacks(this);
-        googleApiClient.registerConnectionFailedListener(this);
-
-        TextViews = new ArrayList<>();
-        View calucationsAll = findViewById(R.id.calculations);
-        setClickableRecursive(calucationsAll, false);
-
 
         Bundle bundle = getIntent().getExtras();
         levelActual1 = bundle.getInt("LEVEL", 1);
 
         level = new Level(levelActual1);
-        mathMission = new MathMission(levelActual1);
-
+        mathMission = new ChildMathFactory().createMisson(levelActual1);
         initAnswers(mathMission);
 
-        for(int i = 0; i < level.HowManyLines ; i++){
-            Calculations calculations = new Calculations(
-                    level.GetLineStart(i),
-                    level.GetColumnStart(i),
-                    level.GetVariables(i),
-                    level.GetSymbols(i),
-                    level.GetResult(i));
-            FillCalculationInLine(calculations);
-            SetClickAbleBlanks(calculations, level.GetFigures(i));
-        }
+        getGameHelper().setConnectOnStart(false);
+//        googleApiClient = getApiClient();
+//        googleApiClient.registerConnectionCallbacks(this);
+//        googleApiClient.registerConnectionFailedListener(this);
 
-        SharedPreferences sharedPref = getSharedPreferences("SOUNDS", MODE_PRIVATE);
-        sfxManager = new SFXManager(this, sharedPref.getBoolean("ISMUTE", false));
+//        TextViews = new ArrayList<>();
+//        View calucationsAll = findViewById(R.id.calculations);
+//        setClickableRecursive(calucationsAll, false);
 
 
 
-        LinesSet();
-        SetResetKeyboard();
-        SetUpDown(level.GetUpLine(), level.GetDownLine());
 
-        keyboard2 = new Keyboard2(this, level.GetUpLine(), level.GetDownLine(), sfxManager);
+//        for(int i = 0; i < level.HowManyLines ; i++){
+//            Calculations calculations = new Calculations(
+//                    level.GetLineStart(i),
+//                    level.GetColumnStart(i),
+//                    level.GetVariables(i),
+//                    level.GetSymbols(i),
+//                    level.GetResult(i));
+//            FillCalculationInLine(calculations);
+//            SetClickAbleBlanks(calculations, level.GetFigures(i));
+//        }
+//
+//        SharedPreferences sharedPref = getSharedPreferences("SOUNDS", MODE_PRIVATE);
+//        sfxManager = new SFXManager(this, sharedPref.getBoolean("ISMUTE", false));
+//
+//
+//
+//        LinesSet();
+//        SetResetKeyboard();
+//        SetUpDown(level.GetUpLine(), level.GetDownLine());
 
-
-        logic = new Logic();
-        for(int i = 0, x = level.GetUpLine(); i < level.HowManyLines; i++, x++) {
-            String[] result = Arrays.copyOf(level.GetVariables(i), level.GetVariables(i).length);//new String[level.GetVariables(i).length];
-            String[] fixgure = level.GetFigures(i);
-            for (int index = 0; index < result.length; index++) {
-                if (fixgure[index] != "q") {
-                    result[index] = "";
-                }
-            }
-
-            logic.setLogic(level.GetUpLine(), x, result);
-        }
-        setCorrectFrameFigures();
-
-
-
-        myProgress = MyProgress.getInstance();
-
-        setAcutalLevelTextView(levelActual1);
+//        keyboard2 = new Keyboard2(this, level.GetUpLine(), level.GetDownLine(), sfxManager);
+//
+//
+//        logic = new Logic();
+//        for(int i = 0, x = level.GetUpLine(); i < level.HowManyLines; i++, x++) {
+//            String[] result = Arrays.copyOf(level.GetVariables(i), level.GetVariables(i).length);//new String[level.GetVariables(i).length];
+//            String[] fixgure = level.GetFigures(i);
+//            for (int index = 0; index < result.length; index++) {
+//                if (fixgure[index] != "q") {
+//                    result[index] = "";
+//                }
+//            }
+//
+//            logic.setLogic(level.GetUpLine(), x, result);
+//        }
+//        setCorrectFrameFigures();
+//
+//
+//
+//        myProgress = MyProgress.getInstance();
+//
+//        setAcutalLevelTextView(levelActual1);
 
         // setupIntersitialAds(levelActual1);
 
@@ -159,8 +160,9 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
         LinearLayout answerView = (LinearLayout) this.findViewById(R.id.answerView);
         for (MathMission.MathAnswer answer : mathMission.getMathAnswers()) {
             TextView view = (TextView) getLayoutInflater().inflate(R.layout.play_answer_component, null);
-//            view.set
-            answers.put(answer.getVarName(), new AnswerInfo(answer, view));
+            int imageResId = Figures.getFigure(mathMission.varFigure.get(answer.varName)).id;
+            view.setBackgroundResource(imageResId);
+            answers.put(answer.varName, new AnswerInfo(answer, view));
             answerView.addView(view);
         }
     }

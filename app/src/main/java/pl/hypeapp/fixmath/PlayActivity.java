@@ -1,12 +1,9 @@
 package pl.hypeapp.fixmath;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -14,26 +11,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.BaseGameActivity;
 import com.google.example.games.basegameutils.BaseGameUtils;
 import com.nineoldandroids.animation.Animator;
 import com.plattysoft.leonids.ParticleSystem;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-
-
-
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import pl.hypeapp.fixmath.model.Figures;
 
@@ -171,7 +160,7 @@ public class PlayActivity extends BaseGameActivity implements
     }
 
     boolean showIntersitialAdOnClose(InterstitialAd intersitialAdOnClose, int actualLevel){
-        return true;
+        return false;
 //        if(actualLevel % 2 == 0) {
 //            if (intersitialAdOnClose.isLoaded()) {
 //                intersitialAdOnClose.show();
