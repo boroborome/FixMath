@@ -389,7 +389,7 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
 
             if (this.passedLinesIndexer == level.GetHowManyLines()) {
                 addCorrectFigure();
-                popUpLevelCorrectScoreAnimation();
+//                popUpLevelCorrectScoreAnimation();
                 this.passedLinesIndexer = 0;
                 this.correctFigureIndex = 0;
                 this.isShowInterstialOnClose = true;
@@ -540,16 +540,16 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
 
     public void addScore(boolean isLevelPassed) {
         final TextView scoreView = (TextView) findViewById(R.id.scoreView);
-        int scoreAdded;
-
-        if (isLevelPassed) {
-            this.score += 1000 * multipler;
-            this.score += 5000;
-            scoreAdded = 1000 * multipler;
-        } else {
-            this.score += 1000 * multipler;
-            scoreAdded = 1000 * multipler;
-        }
+        int scoreAdded = 1000;
+        this.score += scoreAdded;
+//        if (isLevelPassed) {
+//            this.score += 1000 * multipler;
+//            this.score += 5000;
+//            scoreAdded = 1000 * multipler;
+//        } else {
+//            this.score += 1000 * multipler;
+//            scoreAdded = 1000 * multipler;
+//        }
 
         if (String.valueOf(this.score).length() == 4) {
             scoreView.setText(String.valueOf(this.score).substring(0, 1) + ".000");
@@ -586,12 +586,12 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
                 })
                 .playOn(scoreView);
 
-        if (this.multipler > 1) {
-            this.multiplerView.setText(String.valueOf(this.multipler) + "x");
-            YoYo.with(Techniques.FlipInX)
-                    .duration(600)
-                    .playOn(this.multiplerView);
-        }
+//        if (this.multipler > 1) {
+//            this.multiplerView.setText(String.valueOf(this.multipler) + "x");
+//            YoYo.with(Techniques.FlipInX)
+//                    .duration(600)
+//                    .playOn(this.multiplerView);
+//        }
 
         popUpScoreAnimation(scoreAdded);
     }
