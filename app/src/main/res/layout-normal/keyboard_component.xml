@@ -1,0 +1,286 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/keyboard"
+    android:layout_above="@+id/Line5">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="1"
+        android:rowCount="2"
+        android:foregroundGravity="center_vertical">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical">
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    />
+
+                <TextView
+                    android:id="@+id/k1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="KeyClick"
+                    android:text="1"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:textIsSelectable="false"
+                    android:textSize="45dp"
+                    android:fontFamily="sans-serif-black" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/k2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="KeyClick"
+                    android:text="2"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="45dp"
+                    android:fontFamily="sans-serif-black" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/k3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="KeyClick"
+                    android:text="3"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="45dp"
+                    android:fontFamily="sans-serif-black" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/k4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="KeyClick"
+                    android:text="4"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="45dp"
+                    android:fontFamily="sans-serif-black" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/k5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="KeyClick"
+                    android:text="5"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="45dp"
+                    android:fontFamily="sans-serif-black" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/k11"
+                    android:layout_width="70dp"
+                    android:layout_height="match_parent"
+                    android:onClick="KeyboardCloseBtn"
+                    android:text="b"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="45sp"
+                    android:src="@drawable/keyboard_close_button"
+                    android:layout_gravity="right"
+                    android:paddingLeft="14dp" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/k6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="KeyClick"
+                    android:text="6"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="45dp"
+                    android:fontFamily="sans-serif-black" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/k7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="KeyClick"
+                    android:text="7"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="45dp"
+                    android:fontFamily="sans-serif-black" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/k8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="KeyClick"
+                    android:text="8"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="45dp"
+                    android:fontFamily="sans-serif-black" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/k9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="KeyClick"
+                    android:text="9"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="45dp"
+                    android:fontFamily="sans-serif-black" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/k0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="KeyClick"
+                    android:text="0"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="45dp"
+                    android:fontFamily="sans-serif-black" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/k10"
+                    android:layout_width="65dp"
+                    android:layout_height="match_parent"
+                    android:onClick="KeyClick"
+                    android:text="e"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:textIsSelectable="false"
+                    android:textSize="45sp"
+                    android:background="@drawable/backspace_button"
+                    android:layout_gravity="bottom"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </GridLayout>
+
+</RelativeLayout>

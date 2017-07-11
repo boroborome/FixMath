@@ -129,7 +129,7 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
 //        SetResetKeyboard();
 //        SetUpDown(level.GetUpLine(), level.GetDownLine());
 
-//        keyboard2 = new Keyboard2(this, level.GetUpLine(), level.GetDownLine(), sfxManager);
+        keyboard2 = new Keyboard2(this, level.GetUpLine(), level.GetDownLine(), sfxManager);
 //
 //
 //        logic = new Logic();
