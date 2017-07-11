@@ -26,9 +26,12 @@ import com.nineoldandroids.animation.Animator;
 import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import pl.hypeapp.fixmath.model.Figures;
 
 
 public class TimeAttackActivity extends BaseGameActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
@@ -81,7 +84,7 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
 
     ImageUtil imagesUtils;
 
-    InterstitialAd  intersitialAdOnRepeat,  intersitialAdOnClosed;
+//    InterstitialAd  intersitialAdOnRepeat,  intersitialAdOnClosed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,34 +154,34 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
 
 
 
-    void setupIntersitialAds(){
-
-            AdRequest adRequest = new AdRequest.Builder()
-                    .build();
-
-            intersitialAdOnRepeat = new InterstitialAd(this);
-            intersitialAdOnRepeat.setAdUnitId(getString(R.string.adID));
-            intersitialAdOnRepeat.setAdListener(new AdListener() {
-                @Override
-                public void onAdClosed() {
-                    repeatGame();
-                }
-            });
-            intersitialAdOnRepeat.loadAd(adRequest);
-
-            intersitialAdOnClosed = new InterstitialAd(this);
-            intersitialAdOnClosed.setAdUnitId(getString(R.string.adID));
-            intersitialAdOnClosed.setAdListener(new AdListener() {
-                @Override
-                public void onAdClosed() {
-                    Intent i = new Intent(TimeAttackActivity.this, ChooseTimeChallenge.class);
-                    startActivity(i);
-                    finish();
-                }
-            });
-            intersitialAdOnClosed.loadAd(adRequest);
-
-    }
+//    void setupIntersitialAds(){
+//
+//            AdRequest adRequest = new AdRequest.Builder()
+//                    .build();
+//
+//            intersitialAdOnRepeat = new InterstitialAd(this);
+//            intersitialAdOnRepeat.setAdUnitId(getString(R.string.adID));
+//            intersitialAdOnRepeat.setAdListener(new AdListener() {
+//                @Override
+//                public void onAdClosed() {
+//                    repeatGame();
+//                }
+//            });
+//            intersitialAdOnRepeat.loadAd(adRequest);
+//
+//            intersitialAdOnClosed = new InterstitialAd(this);
+//            intersitialAdOnClosed.setAdUnitId(getString(R.string.adID));
+//            intersitialAdOnClosed.setAdListener(new AdListener() {
+//                @Override
+//                public void onAdClosed() {
+//                    Intent i = new Intent(TimeAttackActivity.this, ChooseTimeChallenge.class);
+//                    startActivity(i);
+//                    finish();
+//                }
+//            });
+//            intersitialAdOnClosed.loadAd(adRequest);
+//
+//    }
 
     void repeatGame(){
         Intent x = new Intent(TimeAttackActivity.this, TimeAttackActivity.class);
@@ -187,27 +190,27 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
         finish();
     }
 
-    boolean showIntersitialAdOnClose(InterstitialAd intersitialAdOnClose, boolean isShowInterstialOnClose){
-            if(isShowInterstialOnClose) {
-                if (intersitialAdOnClose.isLoaded()) {
-                    intersitialAdOnClose.show();
-                    return true;
-                } else {
-                    return false;
-                }
-            }else {
-                return false;
-            }
-    }
+//    boolean showIntersitialAdOnClose(InterstitialAd intersitialAdOnClose, boolean isShowInterstialOnClose){
+//            if(isShowInterstialOnClose) {
+//                if (intersitialAdOnClose.isLoaded()) {
+//                    intersitialAdOnClose.show();
+//                    return true;
+//                } else {
+//                    return false;
+//                }
+//            }else {
+//                return false;
+//            }
+//    }
 
-    boolean showIntersitialAdOnNextLevel(InterstitialAd intersitialAdOnClose){
-        if (intersitialAdOnClose.isLoaded()) {
-            intersitialAdOnClose.show();
-            return true;
-        } else {
-            return false;
-        }
-    }
+//    boolean showIntersitialAdOnNextLevel(InterstitialAd intersitialAdOnClose){
+//        if (intersitialAdOnClose.isLoaded()) {
+//            intersitialAdOnClose.show();
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    }
 
 
     private void setVisibilityComponents(boolean isEndWindow, boolean visible) {
@@ -349,8 +352,15 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
                 level.GetResult(passedLines));
         fillCalculationLine(calculations);
         setClickAbleBlanks(calculations, level.GetFigures(passedLines));
-        logic = new Logic(level.GetVariables(passedLines));
 
+        String[] result = Arrays.copyOf(level.GetVariables(passedLines), level.GetVariables(passedLines).length);//new String[level.GetVariables(i).length];
+//        String[] fixgure = level.GetFigures(passedLines);
+        for (int index = 0; index < result.length - 1; index++) {
+//                if (fixgure[index] != "q") {
+            result[index] = "";
+//                }
+        }
+        logic = new Logic(result);
     }
 
     private void checkLine() throws InterruptedException {
@@ -602,32 +612,35 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
 
     }
 
+    private static Random randomizer = new Random();
     private void setNewLevel() {
-        int level = 0;
-        Random randomizer = new Random();
-
-        if(levelsList.size() <= 2){
-            do{
-
-                level = randomizer.nextInt(15);
-                level += 1;
-
-
-            }while(levelsList.contains(level));
-
-            levelsList.add(level);
-        }else if(levelsList.size() > 2){
-
-            do{
-
-                level = randomizer.nextInt(60);
-                level += 1;
-
-
-            }while(levelsList.contains(level));
-
-            levelsList.add(level);
+        int level = randomizer.nextInt((levelsList.size() + 1) * 20) + 1;
+        if (level > 100) {
+            level = 100;
         }
+        levelsList.add(level);
+//        if(levelsList.size() <= 2){
+//            do{
+//
+//                level = randomizer.nextInt(15);
+//                level += 1;
+//
+//
+//            }while(levelsList.contains(level));
+//
+//            levelsList.add(level);
+//        }else if(levelsList.size() > 2){
+//
+//            do{
+//
+//                level = randomizer.nextInt(60);
+//                level += 1;
+//
+//
+//            }while(levelsList.contains(level));
+//
+//            levelsList.add(level);
+//        }
 
         this.level = new Level(level);
         setNewCalculationsAndLogic(this.passedLinesIndexer = 0);
@@ -824,7 +837,7 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
 
             textView = (TextView) findViewById(ID);
             TextViews.add(textView);
-            textView.setClickable(true);
+//            textView.setClickable(true);
             textView.setVisibility(View.VISIBLE);
 
             String ImageViewId = "t_var_ImageView_" + variable;
@@ -832,56 +845,21 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
             imageView = (ImageView) findViewById(ID);
             imageView.setVisibility(View.VISIBLE);
 
-            variable++;
 
-
-            if (figures[i].equals("k")) {
-                imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.kwadrat, width, height));
-                textView.setTag("k");
-            } else if (figures[i].equals("o")) {
-                imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.okrag, width, height));
-                textView.setTag("o");
-            } else if (figures[i].equals("r")) {
-                imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.romb, width, height));
-                textView.setTag("r");
-            } else if (figures[i].equals("s")) {
-                imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.skat, width, height));
-                textView.setTag("s");
-            } else if (figures[i].equals("rf")) {
-                imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.romb_f, width, height));
-                textView.setTag("rf");
-            } else if (figures[i].equals("oz")) {
-                imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.okrag_z, width, height));
-                textView.setTag("oz");
-            } else if (figures[i].equals("ok")) {
-                imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.okat, width, height));
-                textView.setTag("ok");
-            } else if (figures[i].equals("q")) {
-                imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.question, width, height));
+            if (i == 2) {
+                textView.setClickable(true);//figures[i] == "q");
                 textView.setText("?");
-                textView.setTag("q");
-            }else  if(figures[i].equals("kf")){
-                imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.kwadrat_f, width, height));
-                textView.setTag("kf");
-            }else  if(figures[i].equals("kb")){
-                imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.kwadrat_blue, width, height));
-                textView.setTag("kb");
-            }else  if(figures[i].equals("rg")){
-                imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
-                        R.drawable.romb_green, width, height));
-                textView.setTag("rg");
+            } else {
+                textView.setText(calculations.VariableList.get(i));
             }
 
+            String figureCode = figures[i];
+            int figureResId = Figures.getFigure(figureCode).backgroundId;
+            imageView.setImageBitmap(BitmapManager.decodeSampledBitmapFromResource(getResources(),
+                    figureResId, width, height));
+            textView.setTag(figureCode);
+
+            variable++;
         }
 
 
@@ -1594,28 +1572,25 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
                 .playOn(keyboardView);
         closePointerAnimation();
         isKeyboardOpen = false;
-
-
-
     }
 
 
     public void restartLevel(View view) {
         sfxManager.KeyboardClickPlay(true);
-        if(!showIntersitialAdOnNextLevel(intersitialAdOnRepeat)){
+//        if(!showIntersitialAdOnNextLevel(intersitialAdOnRepeat)){
             repeatGame();
-        }
+//        }
 
     }
 
     public void backToChallengeMenu(View view) {
         sfxManager.KeyboardClickPlay(true);
 
-        if(!showIntersitialAdOnClose(intersitialAdOnClosed, isShowInterstialOnClose)) {
+//        if(!showIntersitialAdOnClose(intersitialAdOnClosed, isShowInterstialOnClose)) {
             Intent i = new Intent(TimeAttackActivity.this, ChooseTimeChallenge.class);
             startActivity(i);
             finish();
-        }
+//        }
 
         if(isTimerStarted) {
             timer.cancel();
@@ -1630,11 +1605,11 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
         }else {
             if(!isCounting) {
 
-                if(!showIntersitialAdOnClose(intersitialAdOnClosed, isShowInterstialOnClose)) {
+//                if(!showIntersitialAdOnClose(intersitialAdOnClosed, isShowInterstialOnClose)) {
                     Intent i = new Intent(TimeAttackActivity.this, ChooseTimeChallenge.class);
                     startActivity(i);
                     finish();
-                }
+//                }
 
                 if (isTimerStarted) {
                     timer.cancel();
@@ -1650,10 +1625,10 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
         SharedPreferences sharedPref = getSharedPreferences("LOGGING", MODE_PRIVATE);
         if(!sharedPref.getBoolean("SIGN_STATUS", true)) {
             mSignInClicked = true;
-            mGoogleApiClient.connect();
+//            mGoogleApiClient.connect();
         }else{
             mSignInClicked = true;
-            mGoogleApiClient.connect();
+//            mGoogleApiClient.connect();
             switch(timeChallenge){
                 case 300:
                     startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
@@ -1695,20 +1670,20 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
         mGoogleApiClient.connect();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        SharedPreferences sharedPref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-        if(sharedPref.getBoolean("SIGN_STATUS", true)){
-            mGoogleApiClient.connect();
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        SharedPreferences sharedPref = getSharedPreferences("LOGGING", MODE_PRIVATE);
+//        if(sharedPref.getBoolean("SIGN_STATUS", true)){
+//            mGoogleApiClient.connect();
+//        }
+//    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mGoogleApiClient.disconnect();
-    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        mGoogleApiClient.disconnect();
+//    }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -1746,7 +1721,7 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
             mSignInClicked = false;
             mResolvingConnectionFailure = false;
             if (resultCode == RESULT_OK) {
-                mGoogleApiClient.connect();
+//                mGoogleApiClient.connect();
             } else {
                 // Bring up an error dialog to alert the user that sign-in
                 // failed. The R.string.signin_failure should reference an error

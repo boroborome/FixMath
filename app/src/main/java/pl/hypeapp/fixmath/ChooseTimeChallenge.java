@@ -109,19 +109,15 @@ public class ChooseTimeChallenge extends BaseGameActivity implements GoogleApiCl
     public void openLeaderboard(View view) {
         sfxManager.KeyboardClickPlay(true);
         SharedPreferences sharedPref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-        if(!sharedPref.getBoolean("SIGN_STATUS", true)) {
-            mSignInClicked = true;
-            mGoogleApiClient.connect();
-        }else{
-            mSignInClicked = true;
-            mGoogleApiClient.connect();
-            startActivityForResult(
-            Games.Leaderboards.getAllLeaderboardsIntent(mGoogleApiClient), 1);
-        }
-
-
-
-
+//        if(!sharedPref.getBoolean("SIGN_STATUS", true)) {
+//            mSignInClicked = true;
+//            mGoogleApiClient.connect();
+//        }else{
+//            mSignInClicked = true;
+//            mGoogleApiClient.connect();
+//            startActivityForResult(
+//            Games.Leaderboards.getAllLeaderboardsIntent(mGoogleApiClient), 1);
+//        }
     }
 
     @Override
@@ -144,23 +140,23 @@ public class ChooseTimeChallenge extends BaseGameActivity implements GoogleApiCl
 
     @Override
     public void onConnectionSuspended(int i) {
-        mGoogleApiClient.connect();
+//        mGoogleApiClient.connect();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        SharedPreferences sharedPref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-        if(sharedPref.getBoolean("SIGN_STATUS", true)){
-            mGoogleApiClient.connect();
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        SharedPreferences sharedPref = getSharedPreferences("LOGGING", MODE_PRIVATE);
+//        if(sharedPref.getBoolean("SIGN_STATUS", true)){
+//            mGoogleApiClient.connect();
+//        }
+//    }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mGoogleApiClient.disconnect();
-    }
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        mGoogleApiClient.disconnect();
+//    }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -198,7 +194,7 @@ public class ChooseTimeChallenge extends BaseGameActivity implements GoogleApiCl
             mSignInClicked = false;
             mResolvingConnectionFailure = false;
             if (resultCode == RESULT_OK) {
-                mGoogleApiClient.connect();
+//                mGoogleApiClient.connect();
             } else {
                 // Bring up an error dialog to alert the user that sign-in
                 // failed. The R.string.signin_failure should reference an error
