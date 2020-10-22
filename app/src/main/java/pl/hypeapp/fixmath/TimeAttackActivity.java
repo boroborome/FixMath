@@ -1,5 +1,6 @@
 package pl.hypeapp.fixmath;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -14,15 +15,6 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.games.Games;
-import com.google.example.games.basegameutils.BaseGameActivity;
-import com.google.example.games.basegameutils.BaseGameUtils;
-import com.nineoldandroids.animation.Animator;
 import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
@@ -31,10 +23,13 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import pl.hypeapp.fixmath.base.BaseGameActivity;
 import pl.hypeapp.fixmath.model.Figures;
 
+//import com.nineoldandroids.animation.Animator;
 
-public class TimeAttackActivity extends BaseGameActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
+
+public class TimeAttackActivity extends BaseGameActivity {
 
 
     private int minutes, seconds, time;
@@ -76,7 +71,6 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
     private boolean mSignInClicked = false;
     private boolean mExplicitSignOut;
     boolean isShowInterstialOnClose = false;
-    public GoogleApiClient mGoogleApiClient;
     SFXManager sfxManager;
     MyProgress myProgress;
     BitmapManager bitmapManager;
@@ -115,10 +109,6 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
         isCounting = true;
 
         getGameHelper().setConnectOnStart(false);
-        mGoogleApiClient = getApiClient();
-        mGoogleApiClient.registerConnectionCallbacks(this);
-        mGoogleApiClient.registerConnectionFailedListener(this);
-
 
         myProgress = MyProgress.getInstance();
         bitmapManager = BitmapManager.getInstance();
@@ -126,9 +116,6 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
         imagesUtils = (ImageUtil)getApplication();
 
         // setupIntersitialAds();
-
-
-
     }
 
     @Override
@@ -286,7 +273,7 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
             bestScoreView.setText(scoreView.getText().toString());
 
 
-            myProgress.updateProgress(mGoogleApiClient, this);
+//            myProgress.updateProgress(mGoogleApiClient, this);
         }else{
             yourScoreView.setText(scoreView.getText().toString());
             bestScoreView.setText(bestScoreString);
@@ -1629,45 +1616,21 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
         }else{
             mSignInClicked = true;
 //            mGoogleApiClient.connect();
-            switch(timeChallenge){
-                case 300:
-                    startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
-                            getString(R.string.five_minutes)), 5);
-                    break;
-                case 180:
-                    startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
-                            getString(R.string.three_minutes)), 3);
-                    break;
-                case 60:
-                    startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
-                            getString(R.string.one_minute)), 1);
-                    break;
-            }
+//            switch(timeChallenge){
+//                case 300:
+//                    startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
+//                            getString(R.string.five_minutes)), 5);
+//                    break;
+//                case 180:
+//                    startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
+//                            getString(R.string.three_minutes)), 3);
+//                    break;
+//                case 60:
+//                    startActivityForResult(Games.Leaderboards.getLeaderboardIntent(mGoogleApiClient,
+//                            getString(R.string.one_minute)), 1);
+//                    break;
+//            }
         }
-    }
-
-    @Override
-    public void onSignInFailed() {
-
-    }
-
-    @Override
-    public void onSignInSucceeded() {
-
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        SharedPreferences scorePref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-        SharedPreferences.Editor editor = scorePref.edit();
-        editor.putBoolean("SIGN_STATUS", true);
-        editor.commit();
-        myProgress.updateProgress(mGoogleApiClient, this);
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        mGoogleApiClient.connect();
     }
 
 //    @Override
@@ -1685,60 +1648,4 @@ public class TimeAttackActivity extends BaseGameActivity implements GoogleApiCli
 //        mGoogleApiClient.disconnect();
 //    }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (mResolvingConnectionFailure) {
-            // Already resolving
-            return;
-        }
-
-        // If the sign in button was clicked or if auto sign-in is enabled,
-        // launch the sign-in flow
-        if (mSignInClicked || mAutoStartSignInFlow) {
-            mAutoStartSignInFlow = false;
-            mSignInClicked = false;
-            mResolvingConnectionFailure = true;
-
-            // Attempt to resolve the connection failure using BaseGameUtils.
-            // The R.string.signin_other_error value should reference a generic
-            // error string in your strings.xml file, such as "There was
-            // an issue with sign in, please try again later."
-            if (!BaseGameUtils.resolveConnectionFailure(this,
-                    mGoogleApiClient, connectionResult,
-                    RC_SIGN_IN, getString(R.string.signin_other_error))) {
-                mResolvingConnectionFailure = false;
-            }
-        }
-
-
-
-
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent intent) {
-        if (requestCode == RC_SIGN_IN) {
-            mSignInClicked = false;
-            mResolvingConnectionFailure = false;
-            if (resultCode == RESULT_OK) {
-//                mGoogleApiClient.connect();
-            } else {
-                // Bring up an error dialog to alert the user that sign-in
-                // failed. The R.string.signin_failure should reference an error
-                // string in your strings.xml file that tells the user they
-                // could not be signed in, such as "Unable to sign in."
-                BaseGameUtils.showActivityResultError(this,
-                        requestCode, resultCode, R.string.signin_failure);
-
-                SharedPreferences scorePref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-                SharedPreferences.Editor editor = scorePref.edit();
-                editor.putBoolean("SIGN_STATUS", false);
-                editor.commit();
-
-
-            }
-        }
-
-
-    }
 }

@@ -1,11 +1,10 @@
 package pl.hypeapp.fixmath;
 
-import android.app.Activity;
-
 import android.content.Context;
-
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
@@ -48,7 +47,7 @@ public class Keyboard2 {
                 for (int x = 0; x <= 4; x++) {
                     String TextViewId = "var" + i + "x" + x;
                     int id = context.getResources().getIdentifier(TextViewId, "id", context.getPackageName());
-                    TextView allTextContainer = (TextView) ((Activity)context).getWindow().getDecorView().findViewById(id);
+                    TextView allTextContainer = (TextView) ((AppCompatActivity)context).getWindow().getDecorView().findViewById(id);
                     if(allTextContainer.getTag() != null) {
                         String containerTags = allTextContainer.getTag().toString();
 
@@ -85,7 +84,7 @@ public class Keyboard2 {
                     String TextViewId = "var" + i + "x" + x;
 
                     int id = context.getResources().getIdentifier(TextViewId, "id", context.getPackageName());
-                    TextView allTextContainer = (TextView) ((Activity)context).getWindow().getDecorView().findViewById(id);
+                    TextView allTextContainer = (TextView) ((AppCompatActivity)context).getWindow().getDecorView().findViewById(id);
                     if(allTextContainer.getTag() != null) {
                         String containerTags = allTextContainer.getTag().toString();
 
@@ -106,7 +105,7 @@ public class Keyboard2 {
         }else{
             YoYo.with(Techniques.Shake)
                     .duration(400)
-                    .playOn(((Activity)context).getWindow().getDecorView().findViewById(R.id.keyboard));
+                    .playOn(((AppCompatActivity)context).getWindow().getDecorView().findViewById(R.id.keyboard));
             sfxManager.KeyboardErrorPlay();
         }
 

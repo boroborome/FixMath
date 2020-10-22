@@ -1,16 +1,18 @@
-package pl.hypeapp.fixmath;;
+package pl.hypeapp.fixmath;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
-public class SplashScreenActivity extends Activity  {
+;
+
+public class SplashScreenActivity extends AppCompatActivity {
 
     private static int TIME_RUNNABLE = 3000;
     ImageUtil imageUtil;

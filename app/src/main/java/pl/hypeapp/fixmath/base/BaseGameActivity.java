@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-package com.google.example.games.basegameutils;
+package pl.hypeapp.fixmath.base;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import com.google.android.gms.common.api.GoogleApiClient;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Example base class for games. This implementation takes care of setting up
@@ -40,8 +39,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
  *
  * @author Bruno Oliveira (Google)
  */
-public abstract class BaseGameActivity extends FragmentActivity implements
-        GameHelper.GameHelperListener {
+public abstract class BaseGameActivity extends AppCompatActivity {
 
     // The game helper object. This class is mainly a wrapper around this object.
     protected GameHelper mHelper;
@@ -101,7 +99,6 @@ public abstract class BaseGameActivity extends FragmentActivity implements
         if (mHelper == null) {
             getGameHelper();
         }
-        mHelper.setup(this);
     }
 
     @Override
@@ -122,21 +119,6 @@ public abstract class BaseGameActivity extends FragmentActivity implements
         mHelper.onActivityResult(request, response, data);
     }
 
-    protected GoogleApiClient getApiClient() {
-        return mHelper.getApiClient();
-    }
-
-    protected boolean isSignedIn() {
-        return mHelper.isSignedIn();
-    }
-
-    protected void beginUserInitiatedSignIn() {
-        mHelper.beginUserInitiatedSignIn();
-    }
-
-    protected void signOut() {
-        mHelper.signOut();
-    }
 
     protected void showAlert(String message) {
         mHelper.makeSimpleDialog(message).show();
@@ -158,21 +140,5 @@ public abstract class BaseGameActivity extends FragmentActivity implements
         Log.w(TAG, "BaseGameActivity.enabledDebugLog(bool,String) is " +
                 "deprecated. Use enableDebugLog(boolean)");
         enableDebugLog(enabled);
-    }
-
-    protected String getInvitationId() {
-        return mHelper.getInvitationId();
-    }
-
-    protected void reconnectClient() {
-        mHelper.reconnectClient();
-    }
-
-    protected boolean hasSignInError() {
-        return mHelper.hasSignInError();
-    }
-
-    protected GameHelper.SignInFailureReason getSignInError() {
-        return mHelper.getSignInError();
     }
 }

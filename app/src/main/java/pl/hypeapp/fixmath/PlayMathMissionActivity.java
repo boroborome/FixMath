@@ -1,9 +1,9 @@
 package pl.hypeapp.fixmath;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -12,28 +12,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.example.games.basegameutils.BaseGameActivity;
-import com.google.example.games.basegameutils.BaseGameUtils;
-import com.nineoldandroids.animation.Animator;
 import com.plattysoft.leonids.ParticleSystem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import pl.hypeapp.fixmath.base.BaseGameActivity;
 import pl.hypeapp.fixmath.factory.ChildMathFactory;
 import pl.hypeapp.fixmath.model.Figures;
 import pl.hypeapp.fixmath.model.MathMission;
 
+//import com.nineoldandroids.animation.Animator;
 
-public class PlayMathMissionActivity extends BaseGameActivity implements
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+public class PlayMathMissionActivity extends BaseGameActivity {
     private static class AnswerInfo {
         public final TextView view;
         public int currentValue;
@@ -67,7 +65,6 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
     private int[] calcID = new int[5];
     private Level level;
 
-    GoogleApiClient googleApiClient;
     private static int RC_SIGN_IN = 9001;
 
     private boolean mResolvingConnectionFailure = false;
@@ -639,7 +636,7 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
 
                 myProgress.levelPassed(levelActual1, this);
                 myProgress.unlockAchievement(this, sharedPreferences.getInt("LEVEL_COUNT", 0));
-                myProgress.updateProgress(googleApiClient, this);
+//                myProgress.updateProgress(googleApiClient, this);
 
             }
 
@@ -1576,37 +1573,13 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
 //        if(!sharedPref.getBoolean("SIGN_STATUS", true)) {
 //            mSignInClicked = true;
 //            googleApiClient.connect();
-            myProgress.updateProgress(googleApiClient, this);
+//            myProgress.updateProgress(googleApiClient, this);
 //        }else{
 //            mSignInClicked = true;
 //            googleApiClient.connect();
 //            startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), 2);
 //        }
 
-    }
-
-
-    @Override
-    public void onSignInFailed() {
-
-    }
-
-    @Override
-    public void onSignInSucceeded() {
-
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        SharedPreferences scorePref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-        SharedPreferences.Editor editor = scorePref.edit();
-        editor.putBoolean("SIGN_STATUS", true);
-        editor.commit();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-//        googleApiClient.connect();
     }
 
     @Override
@@ -1617,68 +1590,4 @@ public class PlayMathMissionActivity extends BaseGameActivity implements
 //            googleApiClient.connect();
 //        }
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        googleApiClient.disconnect();
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (mResolvingConnectionFailure) {
-            // Already resolving
-            return;
-        }
-
-        // If the sign in button was clicked or if auto sign-in is enabled,
-        // launch the sign-in flow
-        if (mSignInClicked || mAutoStartSignInFlow) {
-            mAutoStartSignInFlow = false;
-            mSignInClicked = false;
-            mResolvingConnectionFailure = true;
-
-            // Attempt to resolve the connection failure using BaseGameUtils.
-            // The R.string.signin_other_error value should reference a generic
-            // error string in your strings.xml file, such as "There was
-            // an issue with sign in, please try again later."
-            if (!BaseGameUtils.resolveConnectionFailure(this,
-                    googleApiClient, connectionResult,
-                    RC_SIGN_IN, getString(R.string.signin_other_error))) {
-                mResolvingConnectionFailure = false;
-            }
-        }
-
-
-
-
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent intent) {
-        if (requestCode == RC_SIGN_IN) {
-            mSignInClicked = false;
-            mResolvingConnectionFailure = false;
-            if (resultCode == RESULT_OK) {
-//                googleApiClient.connect();
-            } else {
-                // Bring up an error dialog to alert the user that sign-in
-                // failed. The R.string.signin_failure should reference an error
-                // string in your strings.xml file that tells the user they
-                // could not be signed in, such as "Unable to sign in."
-                BaseGameUtils.showActivityResultError(this,
-                        requestCode, resultCode, R.string.signin_failure);
-
-                SharedPreferences scorePref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-                SharedPreferences.Editor editor = scorePref.edit();
-                editor.putBoolean("SIGN_STATUS", false);
-                editor.commit();
-
-
-            }
-        }
-
-
-    }
-
 }

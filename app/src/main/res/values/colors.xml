@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="background_color1">#262b30</color>
-    <color name="background_color2">#a115d5</color>
-    <color name="animation_score">#36a628</color>
     <color name="correct_text">#8ec63f</color>
     <color name="closed_text">#838382</color>
     <color name="normal_text">#FFFFFF</color>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,14 +16,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/time_attack_background"
-        android:src="#000000"
         android:scaleType="fitXY"/>
 
     <ImageView
         android:layout_width="40dp"
         android:layout_height="20dp"
         android:id="@+id/play_pause_btn"
-        android:src="@drawable/pause_btn"
+        app:srcCompat="@drawable/pause_btn"
         android:layout_alignParentRight="true"
         android:layout_alignParentLeft="false"
         android:onClick="pauseGame"
@@ -350,7 +349,7 @@
                         android:textColor="#FFFFFF"
                         android:textIsSelectable="false"
                         android:textSize="45sp"
-                        android:src="@drawable/keyboard_close_button"
+                        app:srcCompat="@drawable/keyboard_close_button"
                         android:layout_gravity="right"
                         android:paddingLeft="14dp" />
 
@@ -832,7 +831,7 @@
         android:layout_width="30dp"
         android:layout_height="25dp"
         android:id="@+id/time_attack_back"
-        android:src="@drawable/hamburger_03_03"
+        app:srcCompat="@drawable/hamburger_03_03"
         android:layout_alignParentRight="false"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
@@ -847,7 +846,7 @@
         android:id="@+id/imageView4"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/logo_s"
+        app:srcCompat="@drawable/logo_s"
         android:layout_marginBottom="5dp" />
 
     <TextView
@@ -877,7 +876,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/timeattack_level_complete_window" />
+            app:srcCompat="@drawable/timeattack_level_complete_window" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -936,14 +935,14 @@
                 android:onClick="backToChallengeMenu"
                 android:layout_alignBottom="@+id/lvl_complete_window"
                 android:visibility="visible"
-                android:src="@drawable/hamburger_03_03"
+                app:srcCompat="@drawable/hamburger_03_03"
                 android:layout_marginRight="10dp" />
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:id="@+id/leaderboardOpenBtn"
-                android:src="@drawable/leaderboard_button"
+                app:srcCompat="@drawable/leaderboard_button"
                 android:onClick="leaderboradOpen"/>
 
             <ImageView
@@ -954,7 +953,7 @@
                 android:layout_toRightOf="@+id/back_to_challenge_menu"
                 android:layout_marginLeft="10dp"
                 android:onClick="restartLevel"
-                android:src="@drawable/repeat_level_btn" />
+                app:srcCompat="@drawable/repeat_level_btn" />
         </LinearLayout>
 
     </RelativeLayout>

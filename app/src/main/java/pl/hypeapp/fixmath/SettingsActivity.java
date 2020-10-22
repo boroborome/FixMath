@@ -11,16 +11,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.example.games.basegameutils.BaseGameActivity;
-import com.google.example.games.basegameutils.BaseGameUtils;
+import pl.hypeapp.fixmath.base.BaseGameActivity;
 
 
-public class SettingsActivity extends BaseGameActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class SettingsActivity extends BaseGameActivity {
 
     private boolean signStatusGoogleGames;
-    private GoogleApiClient mGoogleApi;
 
     private static int RC_SIGN_IN = 9002;
 
@@ -42,9 +38,6 @@ public class SettingsActivity extends BaseGameActivity implements GoogleApiClien
         imageUtil = (ImageUtil)getApplication();
         imageUtil.setImageFirst(background, R.drawable.time_attack_background_normal);
 
-        mGoogleApi = getApiClient();
-        mGoogleApi.registerConnectionCallbacks(this);
-        mGoogleApi.registerConnectionFailedListener(this);
         getGameHelper().setConnectOnStart(false);
 
 
@@ -109,7 +102,6 @@ public class SettingsActivity extends BaseGameActivity implements GoogleApiClien
         sfxManager.KeyboardClickPlay(true);
         if(signStatusGoogleGames){
 
-            signOut();
 
             SharedPreferences scorePref = getSharedPreferences("LOGGING", MODE_PRIVATE);
             SharedPreferences.Editor editor = scorePref.edit();
@@ -121,7 +113,6 @@ public class SettingsActivity extends BaseGameActivity implements GoogleApiClien
 
         }else{
             mSignInClicked = true;
-            mGoogleApi.connect();
         }
     }
 
@@ -145,106 +136,6 @@ public class SettingsActivity extends BaseGameActivity implements GoogleApiClien
 
         Toast.makeText(this, getString(R.string.reset),
                 Toast.LENGTH_LONG).show();
-    }
-
-
-
-    @Override
-    public void onConnected(Bundle bundle) {
-
-        LogInText.setText("GOOGLE PLAY GAMES LOG OUT");
-
-        SharedPreferences scorePref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-        SharedPreferences.Editor editor = scorePref.edit();
-        editor.putBoolean("SIGN_STATUS", true);
-        editor.commit();
-
-        signStatusGoogleGames = true;
-        myProgress.updateProgress(mGoogleApi, this);
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        mGoogleApi.connect();
-    }
-
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (mResolvingConnectionFailure) {
-            // Already resolving
-            return;
-        }
-
-        // If the sign in button was clicked or if auto sign-in is enabled,
-        // launch the sign-in flow
-        if (mSignInClicked || mAutoStartSignInFlow) {
-            mAutoStartSignInFlow = false;
-            mSignInClicked = false;
-            mResolvingConnectionFailure = true;
-
-            // Attempt to resolve the connection failure using BaseGameUtils.
-            // The R.string.signin_other_error value should reference a generic
-            // error string in your strings.xml file, such as "There was
-            // an issue with sign in, please try again later."
-            if (!BaseGameUtils.resolveConnectionFailure(this,
-                    mGoogleApi, connectionResult,
-                    RC_SIGN_IN, getString(R.string.signin_other_error))) {
-                mResolvingConnectionFailure = false;
-            }
-        }
-
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent intent) {
-        if (requestCode == RC_SIGN_IN) {
-            mSignInClicked = false;
-            mResolvingConnectionFailure = false;
-            if (resultCode == RESULT_OK) {
-                mGoogleApi.connect();
-            } else {
-                // Bring up an error dialog to alert the user that sign-in
-                // failed. The R.string.signin_failure should reference an error
-                // string in your strings.xml file that tells the user they
-                // could not be signed in, such as "Unable to sign in."
-                BaseGameUtils.showActivityResultError(this,
-                        requestCode, resultCode, R.string.signin_failure);
-
-                SharedPreferences scorePref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-                SharedPreferences.Editor editor = scorePref.edit();
-                editor.putBoolean("SIGN_STATUS", false);
-                editor.commit();
-
-            }
-        }
-
-    }
-
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mGoogleApi.disconnect();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(signStatusGoogleGames){
-            mGoogleApi.connect();
-        }
-    }
-
-    @Override
-    public void onSignInFailed() {
-
-    }
-
-    @Override
-    public void onSignInSucceeded() {
-
     }
 
     @Override

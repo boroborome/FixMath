@@ -1,11 +1,16 @@
-package pl.hypeapp.fixmath;;import android.app.Activity;
+package pl.hypeapp.fixmath;
+
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+
+;
 
 
 public class TimeKeyboard {
@@ -42,12 +47,12 @@ public class TimeKeyboard {
                     String TextViewId = "t_var" + x ;
 
                     int id = context.getResources().getIdentifier(TextViewId, "id", context.getPackageName());
-                    TextView allTextContainer = (TextView) ((Activity)context).getWindow().getDecorView().findViewById(id);
+                    TextView allTextContainer = (TextView) ((AppCompatActivity)context).getWindow().getDecorView().findViewById(id);
 
                     String ImageViewId = "t_var_ImageView_" + x ;
 
                     int IMid = context.getResources().getIdentifier(ImageViewId, "id", context.getPackageName());
-                    ImageView ImageViewContainer = (ImageView) ((Activity)context).getWindow().getDecorView().findViewById(IMid);
+                    ImageView ImageViewContainer = (ImageView) ((AppCompatActivity)context).getWindow().getDecorView().findViewById(IMid);
 
                     if(allTextContainer.getTag() != null) {
                         String containerTags = allTextContainer.getTag().toString();
@@ -82,7 +87,7 @@ public class TimeKeyboard {
                 String TextViewId = "t_var" + x ;
 
                 int id = context.getResources().getIdentifier(TextViewId, "id", context.getPackageName());
-                TextView allTextContainer = (TextView) ((Activity)context).getWindow().getDecorView().findViewById(id);
+                TextView allTextContainer = (TextView) ((AppCompatActivity)context).getWindow().getDecorView().findViewById(id);
 
 
 
@@ -103,7 +108,7 @@ public class TimeKeyboard {
 
             }
         }else{
-            View keyboardView = ((Activity)context).getWindow().getDecorView().findViewById(R.id.t_keyboard);
+            View keyboardView = ((AppCompatActivity)context).getWindow().getDecorView().findViewById(R.id.t_keyboard);
             YoYo.with(Techniques.Shake)
                     .duration(400)
                     .playOn(keyboardView);

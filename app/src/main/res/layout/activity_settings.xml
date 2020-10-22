@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/settings_layout">
@@ -14,7 +15,7 @@
         android:layout_width="30dp"
         android:layout_height="25dp"
         android:id="@+id/back_to_main_menu"
-        android:src="@drawable/hamburger_03_03"
+        app:srcCompat="@drawable/hamburger_03_03"
         android:onClick="backToMenu"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="10dp"
@@ -97,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/resetGameButton"
-                android:src="@drawable/repeat_level_btn"
+                app:srcCompat="@drawable/repeat_level_btn"
                 android:onClick="resetGame"
                 android:layout_alignParentLeft="false"
                 android:layout_alignParentTop="false"
@@ -135,7 +136,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:id="@+id/imageView7"
-                android:src="@drawable/play_button_loggin"
+                app:srcCompat="@drawable/play_button_loggin"
                 android:layout_below="@+id/googlePlayLayout"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentLeft="true"

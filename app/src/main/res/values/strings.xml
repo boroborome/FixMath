@@ -1,11 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">FixMath</string>
 
-    <string name="blank" translatable="false">         </string>
     <string name="title_activity_menu" translatable="false">MenuActivity</string>
     <string name="title_activity_level_menu" translatable="false">LevelMenu</string>
     <string name="title_activity_choose_time_challenge" translatable="false">ChooseTimeChallenge</string>
-    <string name="signin_other_error" translatable="false">There was an issue with sign in. Please try again later.</string>
     <string name="signin_failure" translatable="false">You need to be logged in to use all the features of Google Play Games.</string>
     <string name="question" translatable="false">\?</string>
     <string name="tut_1">YOUR GOAL IS TO FIX THE CALCULATIONS</string>

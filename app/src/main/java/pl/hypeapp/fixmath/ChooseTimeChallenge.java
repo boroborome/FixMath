@@ -7,13 +7,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.games.Games;
-import com.google.example.games.basegameutils.BaseGameActivity;
-import com.google.example.games.basegameutils.BaseGameUtils;
+import pl.hypeapp.fixmath.base.BaseGameActivity;
+import pl.hypeapp.fixmath.base.BaseGameUtils;
 
-public class ChooseTimeChallenge extends BaseGameActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks{
+public class ChooseTimeChallenge extends BaseGameActivity {
     private final int
             ONE_MINUTE = 60,
             THREE_MINUTES = 180,
@@ -22,10 +19,7 @@ public class ChooseTimeChallenge extends BaseGameActivity implements GoogleApiCl
     private static int RC_SIGN_IN = 9001;
 
     private boolean mResolvingConnectionFailure = false;
-    private boolean mAutoStartSignInFlow = true;
-    private boolean mSignInClicked = false;
     private boolean mExplicitSignOut;
-    public GoogleApiClient mGoogleApiClient;
     SFXManager sfxManager;
 
     ImageUtil imageUtil;
@@ -51,9 +45,6 @@ public class ChooseTimeChallenge extends BaseGameActivity implements GoogleApiCl
         fiveMinuteBestScore.setText(scorePref.getString("BEST_SCORE_STRING" + FIVE_MINTUES, "0"));
 
         getGameHelper().setConnectOnStart(false);
-        mGoogleApiClient = getApiClient();
-        mGoogleApiClient.registerConnectionCallbacks(this);
-        mGoogleApiClient.registerConnectionFailedListener(this);
 
         SharedPreferences soundsPref = getSharedPreferences("SOUNDS", MODE_PRIVATE);
         sfxManager = new SFXManager(this, soundsPref.getBoolean("ISMUTE", false));
@@ -120,29 +111,6 @@ public class ChooseTimeChallenge extends BaseGameActivity implements GoogleApiCl
 //        }
     }
 
-    @Override
-    public void onSignInFailed() {
-
-    }
-
-    @Override
-    public void onSignInSucceeded() {
-
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        SharedPreferences scorePref = getSharedPreferences("LOGGING", MODE_PRIVATE);
-        SharedPreferences.Editor editor = scorePref.edit();
-        editor.putBoolean("SIGN_STATUS", true);
-        editor.commit();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-//        mGoogleApiClient.connect();
-    }
-
 //    @Override
 //    protected void onStart() {
 //        super.onStart();
@@ -158,40 +126,11 @@ public class ChooseTimeChallenge extends BaseGameActivity implements GoogleApiCl
 //        mGoogleApiClient.disconnect();
 //    }
 
+
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (mResolvingConnectionFailure) {
-            // Already resolving
-            return;
-        }
-
-        // If the sign in button was clicked or if auto sign-in is enabled,
-        // launch the sign-in flow
-        if (mSignInClicked || mAutoStartSignInFlow) {
-            mAutoStartSignInFlow = false;
-            mSignInClicked = false;
-            mResolvingConnectionFailure = true;
-
-            // Attempt to resolve the connection failure using BaseGameUtils.
-            // The R.string.signin_other_error value should reference a generic
-            // error string in your strings.xml file, such as "There was
-            // an issue with sign in, please try again later."
-            if (!BaseGameUtils.resolveConnectionFailure(this,
-                    mGoogleApiClient, connectionResult,
-                    RC_SIGN_IN, getString(R.string.signin_other_error))) {
-                mResolvingConnectionFailure = false;
-            }
-        }
-
-
-
-
-    }
-
     protected void onActivityResult(int requestCode, int resultCode,
                                     Intent intent) {
         if (requestCode == RC_SIGN_IN) {
-            mSignInClicked = false;
             mResolvingConnectionFailure = false;
             if (resultCode == RESULT_OK) {
 //                mGoogleApiClient.connect();
@@ -207,11 +146,10 @@ public class ChooseTimeChallenge extends BaseGameActivity implements GoogleApiCl
                 SharedPreferences.Editor editor = scorePref.edit();
                 editor.putBoolean("SIGN_STATUS", false);
                 editor.commit();
-
-
             }
+        } else {
+            super.onActivityResult(requestCode, requestCode, intent);
         }
-
 
     }
 }

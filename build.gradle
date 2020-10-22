@@ -3,9 +3,10 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:4.1.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -15,6 +16,7 @@ apply plugin: 'idea'
 allprojects {
     repositories {
         jcenter()
+        google()
     }
 }
 
@@ -27,7 +29,7 @@ ext {
     android_version = '23.0.2'
     android_min_sdk_version = 14
 
-    appcompat_library_version = '23.2.0'
-    support_library_version = '23.2.0'
-    gms_library_version = '8.4.0'
+    appcompat_library_version = '28.0.0'
+    support_library_version = '28.0.0'
+    gms_library_version = '20.0.1'
 }
