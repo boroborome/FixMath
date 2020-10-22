@@ -7,7 +7,7 @@ FixMath it's mathematical game in which your task is to fix math calculations by
 FixMath offers:
 
 • Two modes: Arcade (beat levels without haste) and Time Attack (play against time and collect as many points!)
- 
+
 • It has 60 levels which can be a good challenge!
 
 • Collect achievements
@@ -16,17 +16,13 @@ FixMath offers:
 
 ## Download
 
-You can download FixMath at [Google Play](https://play.google.com/store/apps/details?id=pl.hypeapp.fixmath)
+You can download FixMath at https://github.com/boroborome/FixMath
 
 ## Libraries
 
 - plattysoft [Leonids](https://github.com/plattysoft/Leonids)
 
 - daimajia [Android View Animations](https://github.com/daimajia/AndroidViewAnimations)
-
-- [Play Games Services](https://developers.google.com/games/services/)
-
-- [AdMob](http://www.google.pl/admob)
 
 ## Screenshots
 
@@ -41,7 +37,7 @@ You can download FixMath at [Google Play](https://play.google.com/store/apps/det
 
 ## Contact 
 
-E-mail: pszem.szym@gmail.com Twitter: [@hype_app](https://twitter.com/hype_app)
+E-mail: boroborome@sina.com
 
 ## License 
 
