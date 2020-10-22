@@ -16,7 +16,9 @@ FixMath offers:
 
 ## Download
 
-You can download FixMath at https://github.com/boroborome/FixMath
+下载地址
+
+链接:https://pan.baidu.com/s/1gxxHmwGlaiqM_yUXLpvw-A  密码:wmrf
 
 ## Libraries
 
